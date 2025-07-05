@@ -106,6 +106,23 @@ button, .btn {
     color: var(--primary-color);
 }
 
+#userInfo {
+    display: inline-block;
+    margin-right: 15px;
+}
+
+#userName {
+    margin-right: 10px;
+}
+
+#logoutBtn {
+    color: var(--primary-color);
+}
+
+#logoutBtn:hover {
+    text-decoration: underline;
+}
+
 .social-icons {
     display: flex;
     margin-left: 15px;

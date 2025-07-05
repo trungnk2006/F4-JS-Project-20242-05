@@ -101,7 +101,6 @@ function displayProduct(product) {
             <div class="product-actions">
                 <button id="addToCartBtn"><i class="fas fa-shopping-cart"></i> Thêm vào giỏ</button>
                 <button id="buyNowBtn"><i class="fas fa-bolt"></i> Mua ngay</button>
-                <button id="addToWishlistBtn"><i class="fas fa-heart"></i></button>
             </div>
             <div class="product-share">
                 <span>Chia sẻ:</span>
@@ -225,7 +224,6 @@ function displayRelatedProducts(products) {
                     <div class="product-actions">
                         <button class="quick-view" data-id="${product.id}"><i class="fas fa-eye"></i></button>
                         <button class="add-to-cart" data-id="${product.id}"><i class="fas fa-shopping-cart"></i></button>
-                        <button class="add-to-wishlist" data-id="${product.id}"><i class="fas fa-heart"></i></button>
                     </div>
                 </div>
                 <div class="product-info">
@@ -260,6 +258,7 @@ function changeMainImage(src) {
 
 async function init() {
     updateCartCount();
+    checkLoginStatus();
 
     // Thêm CSS cho thông báo
     const style = document.createElement('style');
@@ -462,5 +461,39 @@ document.getElementById('btnViewCart').addEventListener('click', (e) => {
     e.preventDefault();
     window.location.href = 'cart.html';
 });
+
+// Check login status
+function checkLoginStatus() {
+    const session = JSON.parse(localStorage.getItem('userSession'));
+    const loginLink = document.getElementById('loginLink');
+    const userInfo = document.getElementById('userInfo');
+    const userName = document.getElementById('userName');
+    const logoutBtn = document.getElementById('logoutBtn');
+
+    if (session) {
+        // User is logged in
+        if (loginLink) loginLink.style.display = 'none';
+        if (userInfo) userInfo.style.display = 'inline-block';
+        if (userName) userName.textContent = `Xin chào, ${session.name}`;
+
+        // Add logout event listener
+        if (logoutBtn) {
+            logoutBtn.addEventListener('click', (e) => {
+                e.preventDefault();
+                logout();
+            });
+        }
+    } else {
+        // User is not logged in
+        if (loginLink) loginLink.style.display = 'inline-block';
+        if (userInfo) userInfo.style.display = 'none';
+    }
+}
+
+// Logout function
+function logout() {
+    localStorage.removeItem('userSession');
+    window.location.reload();
+}
 
 window.addEventListener('DOMContentLoaded', init);

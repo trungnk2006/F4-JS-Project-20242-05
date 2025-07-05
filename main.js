@@ -163,6 +163,7 @@ document.addEventListener("DOMContentLoaded", () => {
     fetchCategories();
     fetchProducts();
     updateCartCount();
+    checkLoginStatus();
 
     document
         .getElementById("categorySelect")
@@ -294,6 +295,40 @@ document.addEventListener("DOMContentLoaded", () => {
     `;
     document.head.appendChild(style);
 });
+
+// Check login status
+function checkLoginStatus() {
+    const session = JSON.parse(localStorage.getItem('userSession'));
+    const loginLink = document.getElementById('loginLink');
+    const userInfo = document.getElementById('userInfo');
+    const userName = document.getElementById('userName');
+    const logoutBtn = document.getElementById('logoutBtn');
+
+    if (session) {
+        // User is logged in
+        if (loginLink) loginLink.style.display = 'none';
+        if (userInfo) userInfo.style.display = 'inline-block';
+        if (userName) userName.textContent = `Xin chào, ${session.name}`;
+
+        // Add logout event listener
+        if (logoutBtn) {
+            logoutBtn.addEventListener('click', (e) => {
+                e.preventDefault();
+                logout();
+            });
+        }
+    } else {
+        // User is not logged in
+        if (loginLink) loginLink.style.display = 'inline-block';
+        if (userInfo) userInfo.style.display = 'none';
+    }
+}
+
+// Logout function
+function logout() {
+    localStorage.removeItem('userSession');
+    window.location.reload();
+}
 
 function fetchCategories() {
     const categories = [
