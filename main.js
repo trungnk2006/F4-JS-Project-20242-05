@@ -83,7 +83,7 @@ function displayProducts(products) {
               <img src="${product.thumbnail}" alt="${product.title}" />
             </a>
             <div class="product-actions">
-              <button class="quick-view" data-id="${product.id}"><i class="fas fa-eye"></i></button>
+            
               <button class="add-to-cart" data-id="${product.id}"><i class="fas fa-shopping-cart"></i></button>
             </div>
           </div>
@@ -115,7 +115,7 @@ function displayProducts(products) {
 }
 
 async function updateOrderInCartApi(product) {
-    const user = JSON.parse(localStorage.getItem('user'))
+    const user = JSON.parse(localStorage.getItem('user') || '{}')
     fetch(`http://localhost:5000/user/update-order-in-cart`, {
         method: 'PATCH', headers: {
             'Content-Type': 'application/json'
@@ -140,7 +140,7 @@ async function addToCartFromList(productId) {
     const product = allProducts.find(p => p.id == productId);
     if (!product) return;
 
-    let cart = JSON.parse(localStorage.getItem('cart')) || [];
+    let cart = JSON.parse(localStorage.getItem('cart') || '[]');
     const index = cart.findIndex(item => item.id === product.id);
 
     if (index > -1) {

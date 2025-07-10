@@ -1,6 +1,28 @@
+const authLink = document.getElementById('auth-link')
+const logout = document.getElementById('logout')
+const user = JSON.parse(localStorage.getItem('user') || '{}')
+
+console.log('user: ', user);
+
+
+if (Object.keys(user).length <= 0) {
+    authLink.innerHTML = '<a id="auth-link" href="login.html"><i class="fas fa-user"></i>Đăng nhập</a>'
+} else {
+    authLink.innerHTML += `<i class="fas fa-user"></i>${user.username}`
+    logout.innerHTML += '<i class="fa-solid fa-arrow-right-from-bracket" style="margin-left: 20px; "></i>Đăng xuất'
+}
+
+function logoutBtn() {
+    localStorage.setItem('user', '')
+    console.log('user: ', localStorage.getItem('user'));
+    localStorage.setItem('cart', '')
+    console.log('cart: ', localStorage.getItem('cart'));
+    window.location.href = '/';
+}
+
 // Cập nhật số lượng sản phẩm trong giỏ hàng
 function updateCartCount() {
-    const cart = JSON.parse(localStorage.getItem('cart')) || [];
+    const cart = JSON.parse(localStorage.getItem('cart') || '[]');
     const cartCount = document.querySelector('.cart-count');
     if (cartCount) {
         const totalItems = cart.reduce((total, item) => total + item.quantity, 0);
@@ -122,7 +144,6 @@ function displayProduct(product) {
             <div class="product-actions">
                 <button id="addToCartBtn"><i class="fas fa-shopping-cart"></i> Thêm vào giỏ</button>
                 <button id="buyNowBtn"><i class="fas fa-bolt"></i> Mua ngay</button>
-                <button id="addToWishlistBtn"><i class="fas fa-heart"></i></button>
             </div>
             <div class="product-share">
                 <span>Chia sẻ:</span>
@@ -247,10 +268,8 @@ function displayRelatedProducts(products) {
                     <a href="product.html?id=${product.id}">
                         <img src="${product.thumbnail}" alt="${product.title}" />
                     </a>
-                    <div class="product-actions">
-                        <button class="quick-view" data-id="${product.id}"><i class="fas fa-eye"></i></button>
+                    <div class="product-actions" style="display: flex; justify-content: center;">
                         <button class="add-to-cart" data-id="${product.id}"><i class="fas fa-shopping-cart"></i></button>
-                        <button class="add-to-wishlist" data-id="${product.id}"><i class="fas fa-heart"></i></button>
                     </div>
                 </div>
                 <div class="product-info">

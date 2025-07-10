@@ -1,3 +1,25 @@
+const authLink = document.getElementById('auth-link')
+const logout = document.getElementById('logout')
+const user = JSON.parse(localStorage.getItem('user') || '{}')
+
+console.log('user: ', user);
+
+
+if (Object.keys(user).length <= 0) {
+    authLink.innerHTML = '<a id="auth-link" href="login.html"><i class="fas fa-user"></i>Đăng nhập</a>'
+} else {
+    authLink.innerHTML += `<i class="fas fa-user"></i>${user.username}`
+    logout.innerHTML += '<i class="fa-solid fa-arrow-right-from-bracket" style="margin-left: 20px; "></i>Đăng xuất'
+}
+
+function logoutBtn() {
+    localStorage.setItem('user', '')
+    console.log('user: ', localStorage.getItem('user'));
+    localStorage.setItem('cart', '')
+    console.log('cart: ', localStorage.getItem('cart'));
+    window.location.href = '/';
+}
+
 console.log('ngu');
 const BE_URL = "http://localhost:5000"
 
