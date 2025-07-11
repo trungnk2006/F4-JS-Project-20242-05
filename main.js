@@ -120,17 +120,17 @@ async function updateOrderInCartApi(product) {
         method: 'PATCH', headers: {
             'Content-Type': 'application/json'
         }, body: JSON.stringify({ userId: user._id, product: product })
-    }).then(res => {
+    }).then(async (res) => {
         if (!res.ok) {
             // Throw an error if HTTP status is not OK (200–299)
-            return res.json().then(err => {
-                throw new Error(err.message || `HTTP error ${res.status}`);
-            });
+            let data = await res.json()
+            throw new Error(data.message);
+            
         }
         return res.json();
     }).catch(e => {
-        alert(e)
         console.log(e);
+        alert(e.message)
         throw new Error(e)
     })
 }
@@ -144,18 +144,30 @@ async function addToCartFromList(productId) {
     const index = cart.findIndex(item => item.id === product.id);
 
     if (index > -1) {
-        await updateOrderInCartApi({ productId: product.id, quantity: cart[index].quantity + 1 })
-        cart[index].quantity += 1;
+        try {
+            await updateOrderInCartApi({ productId: product.id, quantity: cart[index].quantity + 1 })
+            cart[index].quantity += 1;
+            localStorage.setItem('cart', JSON.stringify(cart));
+            updateCartCount();
+
+            // Hiển thị thông báo
+            showNotification('Đã thêm sản phẩm vào giỏ hàng!');
+        } catch(e) {
+            return
+        }
     } else {
-        await updateOrderInCartApi({ productId: product.id, quantity: 1 })
-        cart.push({ ...product, quantity: 1 });
+        try {
+            await updateOrderInCartApi({ productId: product.id, quantity: 1 })
+            cart.push({ ...product, quantity: 1 });
+            localStorage.setItem('cart', JSON.stringify(cart));
+            updateCartCount();
+
+            // Hiển thị thông báo
+            showNotification('Đã thêm sản phẩm vào giỏ hàng!');
+        } catch(e) {
+            return
+        }
     }
-
-    localStorage.setItem('cart', JSON.stringify(cart));
-    updateCartCount();
-
-    // Hiển thị thông báo
-    showNotification('Đã thêm sản phẩm vào giỏ hàng!');
 }
 
 // Hiển thị thông báo

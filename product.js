@@ -269,7 +269,7 @@ function displayRelatedProducts(products) {
                         <img src="${product.thumbnail}" alt="${product.title}" />
                     </a>
                     <div class="product-actions" style="display: flex; justify-content: center;">
-                        <button class="add-to-cart" data-id="${product.id}"><i class="fas fa-shopping-cart"></i></button>
+                        <button class="add-to-cart" data-id="${product.id}" style="padding: 10px; background: black"><i class="fas fa-shopping-cart"></i></button>
                     </div>
                 </div>
                 <div class="product-info">
